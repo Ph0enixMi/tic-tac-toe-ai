@@ -2,43 +2,40 @@ class TicTacToeGame:
 
     def __init__(self):
         self.matrix = [['0'] * 3 for _ in range(3)]
-        self.step_flag = 1
-        self._start_game()
+        self._step_flag = 1
+        self.check_game = True
 
 
-    def _start_game(self):
-        while True:
-            if self.step_flag > 2:
-                self.step_flag = 1
+    def __iter__(self):
+        return self
+
+
+    def __next__(self, coords):
+        if self.check_game:
+            if self._step_flag > 2:
+                self._step_flag = 1
 
             self.print_matrix()
 
-            try:
-                turn = [int(elem) for elem in input(f"Ход игрока {self.step_flag} (введите x y): ").split()]
+            turn = [int(elem) for elem in coords.split()]
 
-                if len(turn) != 2 or not (0 <= turn[0] < 3 and 0 <= turn[1] < 3):
-                    raise ValueError("Некорректный ввод. Введите два числа от 0 до 2 через пробел.")
-                
-            except ValueError as e:
-                print(e)
-                continue
+            self._step(turn[0], turn[1], self._step_flag)
 
-            if not self.step(turn[0], turn[1], self.step_flag):
-                print("Эта ячейка уже занята, попробуйте снова.")
-                continue
-
-            if self.check_winner():
+            if self._check_winner():
                 self.print_matrix()
-                print("Победил игрок", self.step_flag)
-                break
+                print("Победил игрок", self._step_flag)
+                self.check_game = False
 
-            self.step_flag += 1
+            self._step_flag += 1
+        else:
+            raise StopIteration
 
 
-    def step(self, x, y, elem):
+    def _step(self, x, y, elem):
         if self.matrix[x][y] == '0':
             self.matrix[x][y] = elem
             return True
+        self._step_flag -= 1
         return False
 
 
@@ -50,12 +47,12 @@ class TicTacToeGame:
         print()
 
 
-    def check_winner(self):
+    def _check_winner(self):
         return (
-            self._check_row(self.matrix, self.step_flag) or
-            self._check_row(self._rotate_matrix(self.matrix), self.step_flag) or
-            self._check_diagonal(self.matrix, self.step_flag) or
-            self._check_diagonal(self._rotate_matrix(self.matrix), self.step_flag)
+            self._check_row(self.matrix, self._step_flag) or
+            self._check_row(self._rotate_matrix(self.matrix), self._step_flag) or
+            self._check_diagonal(self.matrix, self._step_flag) or
+            self._check_diagonal(self._rotate_matrix(self.matrix), self._step_flag)
         )
 
 
