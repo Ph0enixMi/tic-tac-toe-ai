@@ -1,4 +1,4 @@
-class SuperPuperDuperNewGame():
+class Tic_tac_toe_Game():
     matrix = [['0'] * 3 for i in range(3)]
     
     def __init__(self):
@@ -46,4 +46,4 @@ class SuperPuperDuperNewGame():
             new_row.clear()
 
 
-my_game = SuperPuperDuperNewGame()
+my_game = Tic_tac_toe_Game()
