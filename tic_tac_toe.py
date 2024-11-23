@@ -1,4 +1,5 @@
 class Tic_tac_toe_Game():
+
     matrix = [['0'] * 3 for i in range(3)]
     
     def __init__(self):
@@ -6,29 +7,34 @@ class Tic_tac_toe_Game():
 
 
     def _start_game(self):
+        step_flag = 1
         while True:
+            if step_flag > 2:
+                step_flag = 1
+
             print()
             self.print_matrix()
             print()
             
             turn =  [int(elem) for elem in input().split()]
             
-            self.step(turn[0], turn[1], turn[2])
-        
-        self.print_matrix()
+            self.step(turn[0], turn[1], step_flag)
+            step_flag += 1
+
+            self.check_winner()
 
 
     def step(self, x, y, elem):
         if self.check_block(x, y):
             self.matrix[x][y] = elem
-    
-    
+
+
     def check_block(self, x, y):
         if str(self.matrix[x][y]) == '0':
             return True
         return False
-        
     
+
     def print_matrix(self):
         for row in self.matrix:
             new_row = []
@@ -45,5 +51,8 @@ class Tic_tac_toe_Game():
             print(*new_row)
             new_row.clear()
 
+
+    def check_winner(self):
+        pass
 
 my_game = Tic_tac_toe_Game()
