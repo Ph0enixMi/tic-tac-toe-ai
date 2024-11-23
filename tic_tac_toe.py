@@ -73,6 +73,3 @@ class TicTacToeGame:
     def _rotate_matrix(matrix):
         size = len(matrix)
         return [[matrix[j][size - 1 - i] for j in range(size)] for i in range(size)]
-
-
-my_game = TicTacToeGame()
